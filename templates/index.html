@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <br>
+        {% if diploma_project %}
+
+            <div class="col-md-6" style="float: none; margin:auto">
+                <h3>{{ diploma_project.title }}</h3>
+
+                <p>
+                    {{ diploma_project.description }}
+                </p>
+                <ul class="list-group">
+                    {% for file in diploma_project.diploma_project_file.all %}
+                        <li class="list-group-item"><a href="{{ file.file.url }}" download="">{{ file.file }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <span><i class="fa fa-calendar" aria-hidden="true"></i>
+                    {{ diploma_project.created_at }}</span>
+                <hr>
+                <h5>
+                    {% if  diploma_project.grade %}
+                        Оценка: 100%
+                    {% else %}
+                        Не оценено
+                    {% endif %}
+                </h5>
+                <a href="#" class="btn btn-success">Изменить</a>
+            </div>
+        {% else %}
+        {% endif %}
+
+    </div>
+{% endblock %}
