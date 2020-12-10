@@ -2,34 +2,63 @@
 {% block content %}
     <div class="container">
         <br>
-        {% if diploma_project %}
+        <div class="col-md-6" style="float: none; margin:auto">
+            {% if request.user.is_authenticated %}
+                {% if request.user.student.diploma_project %}
 
-            <div class="col-md-6" style="float: none; margin:auto">
-                <h3>{{ diploma_project.title }}</h3>
+                    <div id="detail_diploma">
+                        <h3>{{ request.user.student.diploma_project.title }}</h3>
 
-                <p>
-                    {{ diploma_project.description }}
-                </p>
-                <ul class="list-group">
-                    {% for file in diploma_project.diploma_project_file.all %}
-                        <li class="list-group-item"><a href="{{ file.file.url }}" download="">{{ file.file }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-                <span><i class="fa fa-calendar" aria-hidden="true"></i>
-                    {{ diploma_project.created_at }}</span>
-                <hr>
-                <h5>
-                    {% if  diploma_project.grade %}
-                        Оценка: 100%
-                    {% else %}
-                        Не оценено
-                    {% endif %}
-                </h5>
-                <a href="#" class="btn btn-success">Изменить</a>
-            </div>
-        {% else %}
-        {% endif %}
+                        <p>
+                            {{ request.user.student.diploma_project.description }}
+                        </p>
+                        <ul class="list-group">
+                            {% for file in request.user.student.diploma_project.diploma_project_file.all %}
+                                <li class="list-group-item"><a href="{{ file.file.url }}"
+                                                               download="">{{ file.file }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <span><i class="fa fa-calendar" aria-hidden="true"></i>
+                            {{ request.user.student.diploma_project.created_at }}</span>
+                        <hr>
+                        {% if  request.user.student.diploma_project.grade %}
+                            <h5>
 
+                                Оценка: 100%
+                                {% else %}
+                                Не оценено
+
+                            </h5>
+                            <br>
+
+                            <a href="{% url 'diploma_update' %}" class="btn btn-success">Изменить</a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <h3>Добавить дипломную работу</h3>
+                    <form action="{% url 'diploma_create' %}" enctype="multipart/form-data" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Название </label>
+                            <input type="text" class="form-control" name="title" placeholder="Название">
+                        </div>
+                        <div class="form-group">
+                            <label>Описание</label>
+                            <textarea name="description" class="form-control" cols="30" rows="10"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Файлы</label>
+                            <br>
+                            <input type="file" name="file" multiple>
+
+                        </div>
+                        <input type="submit" class="btn btn-primary">
+                    </form>
+
+                {% endif %}
+            {% endif %}
+        </div>
     </div>
+
 {% endblock %}
