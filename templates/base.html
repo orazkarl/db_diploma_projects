@@ -24,7 +24,7 @@
   <a class="p-2 text-dark" href="#">Pricing</a>
 </nav> -->
     {% if request.user.is_superuser %}
-        <a class="btn btn-primary" href="admin.html" style="margin-right: 5px">Админ панель</a>
+        <a class="btn btn-primary" href="{% url 'admin_index' %}" style="margin-right: 5px">Админ панель</a>
     {% endif %}
     {% if request.user.is_authenticated %}
         <a class="btn btn-primary" href="/accounts/profile" style="margin-right: 5px">Профиль</a>

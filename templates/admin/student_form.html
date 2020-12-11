@@ -1,0 +1,14 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+    <a href="{% url 'student_list' %}" class="btn btn-light"><span><i class="fa fa-arrow-left"></i></span> Назад</a>
+    <h2>{% if 'update' in request.path %}Изменить{% else %}Добавить{% endif %} студента</h2>
+    <div class="col-md-9">
+        <form class="form" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="btn btn-primary">
+        </form>
+    </div>
+
+
+{% endblock %}

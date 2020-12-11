@@ -1,0 +1,100 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+    <a href="{% url 'student_list' %}" class="btn btn-light"><span><i class="fa fa-arrow-left"></i></span> Назад</a>
+
+    <div class="col-md-9">
+        <h2>{{ student.user.first_name }} {{ student.user.last_name }}</h2>
+
+        <div class="card">
+            <div class="card-body table-border-style">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th scope="row">Логин</th>
+                            <td>{{ student.user.username }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Имя</th>
+                            <td>{{ student.user.first_name }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Фамилия</th>
+                            <td>{{ student.user.last_name }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Почта</th>
+                            <td><a href="mailto:{{ student.user.email }}"
+                                   style="color: #8a04b1">{{ student.user.email }}</a></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Телефон</th>
+                            <td>{{ student.user.phone }}</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Дата рождедие</th>
+                            <td>{{ student.user.dob }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Город</th>
+                            <td>{{ student.user.city }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Специальность</th>
+                            <td>{{ student.group.speciality }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Группа</th>
+                            <td>{{ student.group }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Дата регистрации</th>
+                            <td>{{ student.user.date_joined }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Последний вход</th>
+                            <td>{{ student.user.last_login }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                {% if student.diploma_project %}
+                    <h4>Дипломный проект</h4>
+                    <div id="detail_diploma">
+                        <h5>{{ student.diploma_project.title }}</h5>
+
+                        <p>
+                            Описание:
+                            <br>
+                            {{ student.diploma_project.description }}
+                        </p>
+                        <ul class="list-group">
+                            Файлы:
+                            {% for file in student.diploma_project.diploma_project_file.all %}
+                                <li class="list-group-item"><a href="{{ file.file.url }}"
+                                                               download="">{{ file.file }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <span><i class="fa fa-calendar" aria-hidden="true"></i>
+                            {{ student.diploma_project.created_at }}</span>
+                        <hr>
+
+                            <form action="{% url 'diploma_grade' student.diploma_project.id %}" class="col-4" method="post">
+                                {% csrf_token %}
+                                <label>Оценка: </label>
+                                <input type="number" name="grade" class="form-control" min="0" max="100" value="{{ student.diploma_project.grade }}">
+                                <br>
+                                <input type="submit" class="btn btn-success">
+                            </form>
+
+
+
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+{% endblock %}
