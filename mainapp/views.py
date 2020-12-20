@@ -50,3 +50,5 @@ def diploma_delete(request):
     diploma_project = request.user.student.diploma_project
     diploma_project.delete()
     return redirect('/')
+
+

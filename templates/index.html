@@ -3,7 +3,7 @@
     <div class="container">
         <br>
         <div class="col-md-6" style="float: none; margin:auto">
-            {% if request.user.is_authenticated %}
+            {% if request.user.is_authenticated and not request.user.is_superuser %}
                 {% if request.user.student.diploma_project %}
 
                     <div id="detail_diploma">
