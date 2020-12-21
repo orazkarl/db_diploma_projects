@@ -18,6 +18,7 @@
                 <th>Название</th>
                 <th>Специальность</th>
                 <th>Количество студентов</th>
+                <th>Средний возраст студентов</th>
                 <th></th>
             </tr>
             </thead>
@@ -28,6 +29,7 @@
                     <td><a href="{% url 'group_update' group.id %}">{{ group.name }}</a></td>
                     <td>{{ group.speciality }}</td>
                     <td>{{ group.student_set.count }}</td>
+                    <td>{{ group.get_average }} лет/год(а)</td>
                 <td><a href="{% url 'group_delete' group.id %}" class="btn btn-danger btn-sm">Удалить</a></td>
                 </tr>
             {% endfor %}

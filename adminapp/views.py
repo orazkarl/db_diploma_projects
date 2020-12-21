@@ -8,8 +8,9 @@ from mainapp.models import Group, Speciality, Student, DiplomaProject
 from db_diploma_projects.settings import AUTH_USER_MODEL
 from .forms import SpecialityForm, GroupForm, StudentUserForm
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-
-
+import numpy  as np
+from django.db.models import Max, Min
+import datetime
 def is_superuser(user):
     if user.is_superuser:
         return True
@@ -94,6 +95,19 @@ class StudentListView(generic.ListView):
     queryset = Student.objects.filter(user__is_superuser=False)
 
     def get(self, request, *args, **kwargs):
+        min_age =  self.queryset.all().aggregate(Max('user__dob'))
+        min_age = int(str((datetime.datetime.today().date() - min_age['user__dob__max'])/365).split(' ')[0])
+        max_age = self.queryset.all().aggregate(Min('user__dob'))
+        max_age = int(str((datetime.datetime.today().date() - max_age['user__dob__min']) / 365).split(' ')[0])
+        all_ages = map(lambda x: x.user.get_age(), self.queryset.all())
+        avg_age = np.mean(list(all_ages))
+        avg_age = int(str(avg_age).split(' ')[0])
+        print(max_age, min_age, avg_age)
+        self.extra_context = {
+            'max_age': max_age,
+            'min_age': min_age,
+            'avg_age': avg_age
+        }
         if 'sort' in request.GET:
             sortby = str(request.GET['sort']).split('__')
             if sortby[0] != 'group':

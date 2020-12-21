@@ -17,6 +17,7 @@
                 <th>#</th>
                 <th>Название</th>
                 <th>Код специальности</th>
+                <th>Количество групп</th>
                 <th></th>
             </tr>
             </thead>
@@ -26,6 +27,7 @@
                     <td>{{ forloop.counter }}</td>
                     <td><a href="{% url 'speciality_update' speciality.id %}">{{ speciality.name }}</a></td>
                     <td>{{ speciality.code }}</td>
+                    <td>{{ speciality.group.count }}</td>
                 <td><a href="{% url 'speciality_delete' speciality.id %}" class="btn btn-danger btn-sm">Удалить</a></td>
                 </tr>
             {% endfor %}
